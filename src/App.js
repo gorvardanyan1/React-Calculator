@@ -9,8 +9,8 @@ import App5 from "./App5";
 
 function App() {
   let [value, setValue] = useState("0")
-  // let [ArmOperation, setArmOperation] = useState(0)
-  let ArmOperation = useRef()
+  let num2 = 0;
+  let ArmOperation = useRef({ val: 0, type: "" })
   const setValueFunc = (n, num) => {
     if (n != 0) {
       return `${n}${num}`
@@ -22,8 +22,10 @@ function App() {
       return num
     }
   }
-  const arithOpFunc = () => {
-
+  const arithOpFunc = (op) => {
+    ArmOperation.current.val = value.toString()
+    ArmOperation.current.type = op
+    setValue(0)
   }
   return (
     <div className="App">
@@ -36,26 +38,45 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          <App1 ac={(bool) => { if (bool) { setValue(0) } }} />
-          <App2 clickItm={(num) => setValue((n) => setValueFunc(n, num))} />
-          <App3 clickItm={(num) => setValue((n) => setValueFunc(n, num))} />
+          <App1 ac={(bool) => { if (bool) { setValue(0) } }}
+            arithOp={(op) => arithOpFunc(op)} />
+          <App2 clickItm={(num) => setValue((n) => setValueFunc(n, num))}
+            arithOp={(op) => arithOpFunc(op)} />
+          <App3 clickItm={(num) => setValue((n) => setValueFunc(n, num))}
+            arithOp={(op) => arithOpFunc(op)} />
           <App4 clickItm={(num) => setValue((n) => setValueFunc(n, num))}
             arithOp={(op) => {
-              ArmOperation.current = value.toString()
-              setValue(0)
+              arithOpFunc(op)
+              // ArmOperation.current.val = value.toString()
+              // ArmOperation.current.type = op
+              // setValue(0)
             }}
           />
           <App5 clickItm={(num) => setValue((n) => setValueFunc(n, num))}
             dat={(dat) => {
               let numStr = value.toString()
-
               if (!numStr.includes(dat)) {
                 setValue((n) => `${n}${dat}`)
               }
             }}
             equaliz={() => {
-              let equali = Number(ArmOperation.current) + Number(value)
-              setValue(equali)
+              if (ArmOperation.current.type === "+") {
+                setValue(Number(ArmOperation.current.val) + Number(value))
+                ArmOperation.current.val = 0
+
+              }
+              else if (ArmOperation.current.type === "-") {
+                setValue(Number(ArmOperation.current.val) - Number(value))
+                ArmOperation.current.val = 0
+              }
+              else if (ArmOperation.current.type === "X") {
+                setValue(Number(ArmOperation.current.val) * Number(value))
+                ArmOperation.current.val = 0
+              }
+              else if (ArmOperation.current.type === "/") {
+                setValue(Number(ArmOperation.current.val) / Number(value))
+                ArmOperation.current.val = 0
+              }
             }}
           />
         </tbody>

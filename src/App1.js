@@ -1,11 +1,11 @@
 
-function App1({ ac }) {
+function App1({ ac, arithOp }) {
     return (
         <tr>
             <th onClick={() => ac(true)} ><p>AC</p></th>
-            <th><p>+/-</p></th>
-            <th><p>%</p></th>
-            <th className='orange'><p>/</p></th>
+            <th><p></p></th>
+            <th><p></p></th>
+            <th onClick={() => arithOp("/")} className='orange'><p>/</p></th>
         </tr>
     )
 }
